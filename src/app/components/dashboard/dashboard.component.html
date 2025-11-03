@@ -1,0 +1,118 @@
+<div class="min-h-screen bg-gray-100">
+  <nav class="bg-blue-600 text-white p-4">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-2xl font-bold">Expense Tracker</h1>
+      <button (click)="logout()" class="bg-red-500 px-4 py-2 rounded hover:bg-red-600">
+        Logout
+      </button>
+    </div>
+  </nav>
+
+  <div class="container mx-auto p-6">
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div class="bg-white p-6 rounded-lg shadow">
+        <h3 class="text-gray-500 text-sm">Total Expenses</h3>
+        <p class="text-3xl font-bold text-blue-600">₹{{ stats.totalExpenses || 0 }}</p>
+      </div>
+      <div class="bg-white p-6 rounded-lg shadow">
+        <h3 class="text-gray-500 text-sm">Number of Expenses</h3>
+        <p class="text-3xl font-bold text-green-600">{{ stats.expenseCount || 0 }}</p>
+      </div>
+      <div class="bg-white p-6 rounded-lg shadow">
+        <h3 class="text-gray-500 text-sm">Average Expense</h3>
+        <p class="text-3xl font-bold text-purple-600">
+          ₹{{ stats.expenseCount ? (stats.totalExpenses / stats.expenseCount).toFixed(2) : 0 }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Add Expense Button -->
+    <div class="mb-6">
+      <button (click)="openAddForm()" class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600">
+        + Add New Expense
+      </button>
+    </div>
+
+    <!-- Add/Edit Form Modal -->
+    <div *ngIf="showAddForm" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-white p-8 rounded-lg shadow-lg w-96">
+        <h2 class="text-2xl font-bold mb-4">{{ editingExpense ? 'Edit' : 'Add' }} Expense</h2>
+        
+        <div class="mb-4">
+          <label class="block text-gray-700 mb-2">Title</label>
+          <input type="text" [(ngModel)]="newExpense.title" required
+                 class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        
+        <div class="mb-4">
+          <label class="block text-gray-700 mb-2">Amount</label>
+          <input type="number" [(ngModel)]="newExpense.amount" required
+                 class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        
+        <div class="mb-4">
+          <label class="block text-gray-700 mb-2">Category</label>
+          <select [(ngModel)]="newExpense.category"
+                  class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+          </select>
+        </div>
+        
+        <div class="mb-4">
+          <label class="block text-gray-700 mb-2">Date</label>
+          <input type="date" [(ngModel)]="newExpense.date"
+                 class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        
+        <div class="mb-4">
+          <label class="block text-gray-700 mb-2">Description</label>
+          <textarea [(ngModel)]="newExpense.description"
+                    class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+        </div>
+        
+        <div class="flex gap-2">
+          <button (click)="saveExpense()" class="flex-1 bg-blue-500 text-white py-2 rounded hover:bg-blue-600">
+            Save
+          </button>
+          <button (click)="closeForm()" class="flex-1 bg-gray-300 text-gray-700 py-2 rounded hover:bg-gray-400">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Expenses List -->
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+      <table class="w-full">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Title</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Amount</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let expense of expenses" class="border-t hover:bg-gray-50">
+            <td class="px-6 py-4">{{ expense.title }}</td>
+            <td class="px-6 py-4 font-semibold">₹{{ expense.amount }}</td>
+            <td class="px-6 py-4">
+              <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-sm">{{ expense.category }}</span>
+            </td>
+            <td class="px-6 py-4">{{ expense.date | date:'short' }}</td>
+            <td class="px-6 py-4">
+              <button (click)="editExpense(expense)" class="text-blue-500 hover:text-blue-700 mr-3">
+                Edit
+              </button>
+              <button (click)="deleteExpense(expense._id!)" class="text-red-500 hover:text-red-700">
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
