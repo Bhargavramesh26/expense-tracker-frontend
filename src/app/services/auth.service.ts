@@ -5,7 +5,9 @@ import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private apiUrl = `${environment.apiUrl}/auth`;  // ← Updated
+  private apiUrl = `${environment.apiUrl}/auth`;  // ← Using environment
+  
+  // ... rest of the code stays the same
   private currentUserSubject = new BehaviorSubject<any>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 

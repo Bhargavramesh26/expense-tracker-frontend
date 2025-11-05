@@ -15,7 +15,7 @@ export interface Expense {
 
 @Injectable({ providedIn: 'root' })
 export class ExpenseService {
-  private apiUrl = `${environment.apiUrl}/expenses`;  // ← Updated
+  private apiUrl = `${environment.apiUrl}/expenses`;  // ← Using environment
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
