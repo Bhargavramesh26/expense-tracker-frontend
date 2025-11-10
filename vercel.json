@@ -1,9 +1,12 @@
 {
   "version": 2,
-  "routes": [
+  "buildCommand": "npm run build -- --configuration production",
+  "outputDirectory": "dist/expense-tracker-frontend/browser",
+  "framework": "angular",
+  "rewrites": [
     {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
